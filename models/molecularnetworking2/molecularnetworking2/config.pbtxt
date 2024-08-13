@@ -1,4 +1,6 @@
-max_batch_size: 1000
+name: "molecularnetworking2"
+max_batch_size : 256
+
 input [
   {
     name: "mz_array1" 

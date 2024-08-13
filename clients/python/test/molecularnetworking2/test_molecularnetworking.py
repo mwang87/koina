@@ -54,7 +54,7 @@ def preprocess_example(mz_array1, intensity_array1, mz_array2, intensity_array2,
 
 def test_available_grpc():
     SERVER_GRPC = "localhost:8500"
-    MODEL_NAME = "edit_distance"
+    MODEL_NAME = "molecularnetworking2"
 
     triton_client = grpcclient.InferenceServerClient(url=SERVER_GRPC)
     assert triton_client.is_model_ready(MODEL_NAME)
@@ -62,7 +62,7 @@ def test_available_grpc():
 def test_inference():
     bareserver = "localhost:8501"
     SERVER_HTTP = "http://localhost:8501"
-    MODEL_NAME = "edit_distance"
+    MODEL_NAME = "molecularnetworking2"
 
     url = f"{SERVER_HTTP}/v2/models/{MODEL_NAME}/infer"
 
