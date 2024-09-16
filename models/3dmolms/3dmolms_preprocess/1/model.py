@@ -38,7 +38,7 @@ def pre_process(smiles, precursor_type, collision_energy, config):
     nce = collision_energy * 500 * charge_factor[charge] / precursor_mz
 
     # Concatenate precursor type and normalised collision energy
-    env_data = np.concatenate([env_data, np.array([nce])], axis=0)
+    env_data = np.concatenate([np.array([nce]), env_data], axis=0)
     
     # 3. idx_base_data: fixed value
     idx_base_data = np.array([[[0]]], dtype=np.int32)
