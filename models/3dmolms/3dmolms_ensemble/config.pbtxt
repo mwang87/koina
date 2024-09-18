@@ -1,7 +1,7 @@
 name: "3dmolms_ensemble"
 max_batch_size: 256
 platform: "ensemble"
-input[
+input [
  {
    name: 'SMILES',
    data_type: TYPE_STRING,
@@ -20,12 +20,16 @@ input[
 ]
 output [
  {
-   name: 'me_out',
+   name: 'qtof_out',
+   data_type: TYPE_FP32,
+   dims: [-1, 2]
+ },
+ {
+   name: 'orbi_out',
    data_type: TYPE_FP32,
    dims: [-1, 2]
  }
 ]
-
 
 ensemble_scheduling {
   step [
@@ -64,11 +68,11 @@ ensemble_scheduling {
         key: "x",
         value: "intermediate_x"
       },
-        input_map {
+      input_map {
         key: "env",
         value: "intermediate_env"
       },
-        input_map {
+      input_map {
         key: "idx_base",
         value: "intermediate_idx_base"
       },
@@ -78,15 +82,43 @@ ensemble_scheduling {
       }
     },
     {
+      model_name: "3dmolms_torch_orbi",
+      model_version: 1,
+      input_map {
+        key: "x",
+        value: "intermediate_x"
+      },
+      input_map {
+        key: "env",
+        value: "intermediate_env"
+      },
+      input_map {
+        key: "idx_base",
+        value: "intermediate_idx_base"
+      },
+      output_map {
+        key: "3dmolms_out",
+        value: "3dmolms_orbi_out"
+      }
+    },
+    {
       model_name: "3dmolms_postprocess",
       model_version: 1,
-      input_map{
+      input_map {
         key: "3dmolms_out",
         value: "3dmolms_out"
       },
-      output_map{
-        key: "cleaned_out",
-        value: "me_out"
+      input_map {
+        key: "3dmolms_orbi_out",
+        value: "3dmolms_orbi_out"
+      },
+      output_map {
+        key: "qtof_out",
+        value: "qtof_out"
+      },
+      output_map {
+        key: "orbi_out",
+        value: "orbi_out"
       }
     }
   ]

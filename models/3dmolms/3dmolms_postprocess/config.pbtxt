@@ -4,11 +4,21 @@ input [
     name: "3dmolms_out"
     data_type: TYPE_FP32
     dims: [7500]
+  },
+  {
+    name: "3dmolms_orbi_out"
+    data_type: TYPE_FP32
+    dims: [7500]
   }
 ]
 output [
   {
-    name: "cleaned_out"
+    name: "qtof_out"
+    data_type: TYPE_FP32
+    dims: [-1, 2]
+  },
+  {
+    name: "orbi_out"
     data_type: TYPE_FP32
     dims: [-1, 2]
   }

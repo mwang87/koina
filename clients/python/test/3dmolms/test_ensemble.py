@@ -26,8 +26,8 @@ def test_inference():
         "CCCCCCC"
     ]
 
-    #bareserver = "localhost:8501" # Local test
-    bareserver = "lemon.wanglab.science:8501" # production test
+    bareserver = "localhost:8501" # Local test
+    #bareserver = "lemon.wanglab.science:8501" # production test
     MODEL_NAME = "3dmolms_ensemble"
 
     triton_client = httpclient.InferenceServerClient(url=bareserver)
@@ -52,16 +52,21 @@ def test_inference():
     collision_energy = httpclient.InferInput("collision_energy", collision_energy_in.shape, "FP32")
     collision_energy.set_data_from_numpy(collision_energy_in)
 
-    output = httpclient.InferRequestedOutput("me_out")
+    qtof_out = httpclient.InferRequestedOutput("qtof_out")
+    orbi_out = httpclient.InferRequestedOutput("orbi_out")
 
-    response = triton_client.infer(MODEL_NAME, inputs=[SMILES, precursor_type, collision_energy], outputs=[output])
+    response = triton_client.infer(MODEL_NAME, inputs=[SMILES, precursor_type, collision_energy], outputs=[qtof_out, orbi_out])
 
-    output_data = response.as_numpy("me_out")
+    qtof_out_data = response.as_numpy("qtof_out")
+    orbi_out_data = response.as_numpy("orbi_out")
 
     # This should be around 16, as it should be 2 x 2 x 4 (though the torch model is not exact in 4x)
 
-    print(len(output_data))
-    print(output_data)
+    print(len(qtof_out_data))
+    print(qtof_out_data)
+
+    print(len(orbi_out_data))
+    print(orbi_out_data)
 
 
 def main():
